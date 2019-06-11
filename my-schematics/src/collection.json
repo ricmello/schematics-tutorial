@@ -3,8 +3,9 @@
   "extends": ["@schematics/angular"],
   "schematics": {
     "my-schematics": {
-      "description": "A blank schematic.",
-      "factory": "./my-schematics/index#mySchematics"
+      "description": "A custom module generator.",
+      "factory": "./my-schematics/index#mySchematics",
+      "schema": "./my-schematics/schema.json"
     }
   }
 }

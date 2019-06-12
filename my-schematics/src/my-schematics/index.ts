@@ -20,7 +20,7 @@ import {
   strings
 } from '@angular-devkit/core';
 
-export function mySchematics(options: any): Rule {
+export function mySchematics(_options: any): Rule {
   return (tree: Tree, context: SchematicContext) => {
     const workspaceConfig = tree.read('/angular.json');
     if (!workspaceConfig) {
@@ -36,33 +36,33 @@ export function mySchematics(options: any): Rule {
     );
 
     // get project name
-    if (!options.project) {
-      options.project = workspace.defaultProject;
+    if (!_options.project) {
+      _options.project = workspace.defaultProject;
     }
 
-    const projectName = options.project as string;
+    const projectName = _options.project as string;
     const project = workspace.projects[projectName];
     const projectType = project.projectType === 'application' ? 'app' : 'lib';
 
     // Get the path to create files
-    if (options.path === undefined) {
-      options.path = `${project.sourceRoot}/${projectType}`;
+    if (_options.path === undefined) {
+      _options.path = `${project.sourceRoot}/${projectType}`;
     }
 
-    const parsedPath = parseName(options.path, options.name);
-    options.name = parsedPath.name;
-    options.path = parsedPath.path;
+    const parsedPath = parseName(_options.path, _options.name);
+    _options.name = parsedPath.name;
+    _options.path = parsedPath.path;
 
     // Parse template files
     const templateSource = apply(url('./files'), [
       renameTemplateFiles(),
       template({
         ...strings,
-        ...options,
+        ..._options,
         classify: strings.classify,
         dasherize: strings.dasherize
       }),
-      move(normalize((options.path + '/' + options.name) as string))
+      move(normalize((_options.path + '/' + _options.name) as string))
     ]);
 
     // Return Rule chain
